@@ -1,0 +1,7 @@
+variant,psnr,ssim,pe_0p4_bpp,provenance,verification
+Full model,40.35,0.991,35.62,published_Table_10,not_independently_reproduced
+w/o joint state,37.25,0.975,29.82,published_Table_10,not_independently_reproduced
+w/o DQN shaping,36.80,0.972,21.30,published_Table_10,not_independently_reproduced
+w/o quantization compensation,38.55,0.988,32.15,published_Table_10,not_independently_reproduced
+DDPG substitute,37.85,0.978,26.50,published_Table_10,not_independently_reproduced
+Standard DQN substitute,35.20,0.962,19.45,published_Table_10,not_independently_reproduced

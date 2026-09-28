@@ -1,0 +1,10 @@
+clip_epsilon,bpp,pe_percent,provenance,verification
+0.1,0.1,33.41,published_Figure_8b_label,visually_checked
+0.2,0.1,35.62,published_Figure_8b_label,visually_checked
+0.3,0.1,32.88,published_Figure_8b_label,visually_checked
+0.1,0.2,25.10,published_Figure_8b_label,visually_checked
+0.2,0.2,28.50,published_Figure_8b_label,visually_checked
+0.3,0.2,24.30,published_Figure_8b_label,visually_checked
+0.1,0.4,12.50,published_Figure_8b_label,visually_checked
+0.2,0.4,15.80,published_Figure_8b_label,visually_checked
+0.3,0.4,11.09,published_Figure_8b_label,visually_checked

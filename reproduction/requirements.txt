@@ -1,0 +1,5 @@
+# Optional genuine detector inference; these packages are NOT needed for the C demonstration.
+torch>=2.2
+numpy>=1.24
+Pillow>=10
+scikit-image>=0.22

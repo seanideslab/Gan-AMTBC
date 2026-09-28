@@ -1,2 +1,0 @@
-image_id,bpp,psnr,ssim,embedded_bits,bit_errors
-lena_like_64.pgm,0.2500,31.4679,0.990627,1024,0

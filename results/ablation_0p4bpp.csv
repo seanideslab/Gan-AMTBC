@@ -1,7 +1,0 @@
-variant,removed_or_replaced,psnr,ssim,pe_0p4_bpp,interpretation
-Full model,None,40.35,0.991,35.62,Reference configuration
-w/o joint state,Remove variance use QLD only,37.25,0.975,29.82,QLD alone over-loads sharp simple edges
-w/o DQN shaping,Static reward weights,36.80,0.972,21.30,Bimodal conservative or insecure policies
-w/o quantization compensation,Bitmap only no H/L correction,38.55,0.988,32.15,Luminance drift remains detectable
-DDPG substitute,Rounded continuous action,37.85,0.978,26.50,Policy oscillation under discrete payloads
-Standard DQN substitute,Off-policy per-block Q,35.20,0.962,19.45,Overestimation under non-stationary discriminator

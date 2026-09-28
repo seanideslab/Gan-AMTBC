@@ -7,7 +7,7 @@ static uint8_t clamp_u8(float x) { if (x < 0) return 0; if (x > 255) return 255;
 
 int ambtc_encode(const GrayImage *img, int block_size, AMBTCImage *out) {
     memset(out,0,sizeof(*out));
-    if (!img || !img->data || img->w % block_size || img->h % block_size) return -1;
+    if (!img || !img->data || block_size != 4 || img->w % block_size || img->h % block_size) return -1;
     out->w = img->w; out->h = img->h; out->block_size = block_size;
     out->blocks_x = img->w / block_size; out->blocks_y = img->h / block_size;
     out->nblocks = out->blocks_x * out->blocks_y;

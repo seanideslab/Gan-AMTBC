@@ -1,1 +1,0 @@
-/mnt/data/gan_ppo_ambtc/examples/lena_like_64.pgm

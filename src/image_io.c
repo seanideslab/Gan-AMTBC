@@ -21,13 +21,21 @@ int pgm_read(const char *path, GrayImage *img) {
     if (fread(magic,1,2,fp)!=2 || strcmp(magic,"P5")) { fclose(fp); return -2; }
     skip_ws_comments(fp); if (fscanf(fp, "%d", &img->w) != 1) { fclose(fp); return -3; }
     skip_ws_comments(fp); if (fscanf(fp, "%d", &img->h) != 1) { fclose(fp); return -4; }
-    skip_ws_comments(fp); int maxv=0; if (fscanf(fp, "%d", &maxv) != 1 || maxv > 255) { fclose(fp); return -5; }
-    fgetc(fp);
-    img->data = (uint8_t*)malloc((size_t)img->w * img->h);
+    skip_ws_comments(fp); int maxv=0;
+    if (fscanf(fp, "%d", &maxv) != 1 || maxv != 255 || img->w <= 0 || img->h <= 0 ||
+        img->w > 100000 || img->h > 100000 || (size_t)img->w * (size_t)img->h > 100000000u) {
+        fclose(fp); return -5;
+    }
+    int separator=fgetc(fp); /* consume precisely one whitespace after maxval */
+    if (separator != ' ' && separator != '\n' && separator != '\r' && separator != '\t') {
+        fclose(fp); return -5;
+    }
+    img->data = (uint8_t*)malloc((size_t)img->w * (size_t)img->h);
     if (!img->data) { fclose(fp); return -6; }
     size_t n = fread(img->data,1,(size_t)img->w*img->h,fp);
     fclose(fp);
-    return n == (size_t)img->w*img->h ? 0 : -7;
+    if (n != (size_t)img->w*img->h) { free(img->data); img->data=NULL; return -7; }
+    return 0;
 }
 
 int pgm_write(const char *path, const GrayImage *img) {

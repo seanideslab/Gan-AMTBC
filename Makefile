@@ -1,34 +1,35 @@
-CC ?= gcc
-CFLAGS ?= -O2 -std=c11 -Wall -Wextra -Iinclude
+CC ?= cc
+CFLAGS ?= -O2 -std=c11 -Wall -Wextra -Wpedantic -Iinclude
 LDFLAGS ?= -lm
-SRC_COMMON = src/config.c src/image_io.c src/ambtc.c src/policy.c src/generator.c src/metrics.c src/csv.c
-BIN_DIR = bin
-
-all: dirs infer evaluate split train_stub export_ablation
-
-dirs:
-	mkdir -p $(BIN_DIR) results
-
-infer: $(SRC_COMMON) src/infer.c
-	$(CC) $(CFLAGS) -o $(BIN_DIR)/gan_ppo_ambtc_infer $^ $(LDFLAGS)
-
-evaluate: $(SRC_COMMON) src/evaluate.c
-	$(CC) $(CFLAGS) -o $(BIN_DIR)/gan_ppo_ambtc_eval $^ $(LDFLAGS)
-
-split: src/split_tool.c
-	$(CC) $(CFLAGS) -o $(BIN_DIR)/gan_ppo_ambtc_split $^ $(LDFLAGS)
-
-train_stub: src/config.c src/train_stub.c
-	$(CC) $(CFLAGS) -o $(BIN_DIR)/gan_ppo_ambtc_train_stub $^ $(LDFLAGS)
-
-export_ablation: src/export_ablation.c
-	$(CC) $(CFLAGS) -o $(BIN_DIR)/gan_ppo_ambtc_export_ablation $^ $(LDFLAGS)
-
+COMMON = src/image_io.c src/ambtc.c src/policy.c src/generator.c src/budget.c src/metrics.c
+FORMAT = src/ambtc_format.c
+BIN = bin
+.PHONY: all clean smoke test
+all: $(BIN)/gan_ppo_ambtc_infer $(BIN)/gan_ppo_ambtc_eval $(BIN)/gan_ppo_ambtc_extract $(BIN)/gan_ppo_ambtc_split
+$(BIN):
+	mkdir -p $(BIN)
+$(BIN)/gan_ppo_ambtc_infer: $(COMMON) $(FORMAT) src/infer.c | $(BIN)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+$(BIN)/gan_ppo_ambtc_eval: $(COMMON) src/evaluate.c | $(BIN)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+$(BIN)/gan_ppo_ambtc_extract: src/ambtc.c src/image_io.c src/generator.c $(FORMAT) src/extract.c | $(BIN)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
+$(BIN)/gan_ppo_ambtc_split: src/split_tool.c | $(BIN)
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 smoke: all
-	$(BIN_DIR)/gan_ppo_ambtc_infer examples/lena_like_64.pgm results/stego_64.pgm 0.4 weights/policy_smoke.txt
-	printf "examples/lena_like_64.pgm\n" > data/splits/test.txt
-	$(BIN_DIR)/gan_ppo_ambtc_eval data/splits/test.txt results/eval_smoke.csv 0.4 weights/policy_smoke.txt
-	$(BIN_DIR)/gan_ppo_ambtc_export_ablation
-
+	mkdir -p results
+	$(BIN)/gan_ppo_ambtc_infer example/lena_like_64.pgm results/demo_0p2.pgm 0.2 weight/policy_smoke.txt
+	$(BIN)/gan_ppo_ambtc_extract results/demo_0p2.pgm.ambtc results/demo_0p2.pgm.map results/demo_0p2_recovered.bin
+	cmp results/demo_0p2.pgm.payload.bin results/demo_0p2_recovered.bin
+	$(BIN)/gan_ppo_ambtc_infer example/lena_like_64.pgm results/demo_0p4.pgm 0.4 weight/policy_smoke.txt
+	$(BIN)/gan_ppo_ambtc_extract results/demo_0p4.pgm.ambtc results/demo_0p4.pgm.map results/demo_0p4_recovered.bin
+	cmp results/demo_0p4.pgm.payload.bin results/demo_0p4_recovered.bin
+	printf 'example/lena_like_64.pgm\n' > results/demo_images.txt
+	$(BIN)/gan_ppo_ambtc_eval results/demo_images.txt results/demo_eval.csv 0.4 weight/policy_smoke.txt
+	test "$$(sha256sum results/demo_0p2.pgm results/demo_0p4.pgm | cut -d' ' -f1 | uniq | wc -l)" -eq 2
+test: smoke
+	$(CC) $(CFLAGS) -o $(BIN)/test_math src/generator.c tests/test_math.c $(LDFLAGS)
+	$(BIN)/test_math
+	python3 -m unittest discover -s tests -v
 clean:
-	rm -rf $(BIN_DIR) results/*.pgm results/*.csv
+	rm -rf $(BIN) results/demo_* results/*.ambtc results/*.map results/*_recovered.bin

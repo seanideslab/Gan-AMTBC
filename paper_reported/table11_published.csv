@@ -1,0 +1,4 @@
+clip_epsilon,bpp,psnr,ssim,pe_percent,provenance,verification
+0.1,0.4,39.82,0.987,33.41,published_Table_11,not_independently_reproduced
+0.2,0.4,40.35,0.991,35.62,published_Table_11,not_independently_reproduced
+0.3,0.4,39.54,0.984,32.88,published_Table_11,not_independently_reproduced

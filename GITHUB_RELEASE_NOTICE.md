@@ -1,0 +1,7 @@
+# Transparency update: versioned research-software package
+
+The earlier public C repository contained demonstration utilities that did not reproduce the full published PPO/DQN/U-Net training and steganalysis evaluation. In particular, the original `export_ablation.c` printed published numbers directly; the original training stub generated illustrative trajectories; and a 64x64 example did not satisfy the requested payloads. These components are removed or clearly segregated in this release.
+
+The corrected C demo now reports achieved image-level payload and actually checks bitmap extraction via a compressed triplet sidecar. Its numbers are **not** the published experimental numbers. Publication table values are preserved in `paper_reported/` as historical transcriptions, without implying independent verification. A publication Figure 8(b)/Table 4/Table 11 discrepancy and a Section 4.4 formula inconsistency are documented in `CORRECTION_AUDIT.md`; editorial clarification has been requested/planned. Do not use this package to substantiate published steganalysis performance until original experiment assets and independently verified logs are available.
+
+Please refer to the version history and DOI 10.1016/j.image.2026.117652. Original training assets and held-out image split were not present in the uploaded archive; new demonstration runs and newly generated splits cannot be passed off as the original experiments.
