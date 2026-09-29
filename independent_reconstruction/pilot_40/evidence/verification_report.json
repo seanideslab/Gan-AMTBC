@@ -1,0 +1,53 @@
+{
+  "experiment_label": "NEW_INDEPENDENT_RECONSTRUCTION / SMOKE_ONLY / FIXED_VALIDATION",
+  "fixed_conditions_equal_across_epochs": true,
+  "val_per_image_rows": 60,
+  "all_val_bit_errors": 0,
+  "previous_artifacts_unchanged": true,
+  "manifest_byte_identical": true,
+  "run_epoch_and_make_pair_unchanged": true,
+  "epoch3_state_dict_exactly_matches_prior_seed42_fresh_run": true,
+  "checkpoint_sha256": {
+    "checkpoint_best.pth": "dcbb6440dd1db5f70240c48013e6d3feed7faaf693a4e122276eb9231a944639",
+    "checkpoint_epoch_001.pth": "d3930f317bde8c24b26c06fbaa71d73f2d992252f4271b48c00b88c329ea2595",
+    "checkpoint_epoch_002.pth": "28948c9b4312e4e371bbea94df3f05e6d78bf24988250bb58f837d7e50f46f07",
+    "checkpoint_epoch_003.pth": "dcbb6440dd1db5f70240c48013e6d3feed7faaf693a4e122276eb9231a944639",
+    "checkpoint_latest.pth": "dcbb6440dd1db5f70240c48013e6d3feed7faaf693a4e122276eb9231a944639"
+  },
+  "best_epoch": 3,
+  "fixed_scores": [
+    0.004783157748170197,
+    0.004740369017235934,
+    0.00466476168949157
+  ],
+  "each_payload_fixed_corrected_mse_strictly_decreasing": true,
+  "best_each_payload_below_baseline": true,
+  "holdout_evaluated_once_per_payload_after_selection": true,
+  "holdout_results": [
+    {
+      "payload": 0.2,
+      "n_images": 10,
+      "achieved_bpp": 0.199951171875,
+      "baseline_mse": 0.005554089299403131,
+      "corrected_mse": 0.005395842180587351,
+      "baseline_psnr": 23.878832875566694,
+      "corrected_psnr": 23.973765939704457,
+      "mse_reduction_percent": 2.8492001169802106,
+      "improved_images": 9,
+      "bit_errors": 0
+    },
+    {
+      "payload": 0.4,
+      "n_images": 10,
+      "achieved_bpp": 0.39990234375,
+      "baseline_mse": 0.005971217982005328,
+      "corrected_mse": 0.005804508237633854,
+      "baseline_psnr": 23.462653988322224,
+      "corrected_psnr": 23.568102275990746,
+      "mse_reduction_percent": 2.791888436728729,
+      "improved_images": 9,
+      "bit_errors": 0
+    }
+  ],
+  "expanded_training": false
+}

@@ -1,0 +1,33 @@
+{
+  "status": "NEW_INDEPENDENT_RECONSTRUCTION",
+  "smoke_only": true,
+  "not_original_checkpoint": true,
+  "no_security_detector": true,
+  "model": "CandidateAttentionResUNet",
+  "model_base": 50,
+  "parameters": 4962229,
+  "source_note": "unverified 50-base Attention ResUNet shape summary",
+  "manifest_sha256": "cdd64fe0cfe13c2bdaba0551e9a23dadd3a9c647912f74e33e4827f470f312b6",
+  "manifest_file": "[ORIGINAL LOCAL PATH REDACTED: see dataset_manifest_portable.json]",
+  "image_size": 64,
+  "epochs_requested": 3,
+  "batch_size": 2,
+  "gradient_accumulation": 1,
+  "effective_batch_size": 2,
+  "seed": 42,
+  "lr": 0.0001,
+  "targets": [
+    0.2,
+    0.4
+  ],
+  "max_delta": 0.08,
+  "device": "cpu",
+  "training_objective": "AMBTC-only cover vs bitmap-preserving stego recon MSE; no steganalysis loss",
+  "validation_protocol": "FIXED_VALIDATION",
+  "fixed_val_epoch": 0,
+  "fixed_val_targets": [
+    0.2,
+    0.4
+  ],
+  "experiment_label": "NEW_INDEPENDENT_RECONSTRUCTION / SMOKE_ONLY / FIXED_VALIDATION"
+}

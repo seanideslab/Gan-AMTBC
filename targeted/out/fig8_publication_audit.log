@@ -1,0 +1,11 @@
+eps=0.1 bpp=0.1: Fig8b=33.41 Table4=None Table11=None status=NOT_COMPARABLE
+eps=0.2 bpp=0.1: Fig8b=35.62 Table4=46.85 Table11=None status=CONFLICT
+eps=0.3 bpp=0.1: Fig8b=32.88 Table4=None Table11=None status=NOT_COMPARABLE
+eps=0.1 bpp=0.2: Fig8b=25.10 Table4=None Table11=None status=NOT_COMPARABLE
+eps=0.2 bpp=0.2: Fig8b=28.50 Table4=42.54 Table11=None status=CONFLICT
+eps=0.3 bpp=0.2: Fig8b=24.30 Table4=None Table11=None status=NOT_COMPARABLE
+eps=0.1 bpp=0.4: Fig8b=12.50 Table4=None Table11=33.41 status=CONFLICT
+eps=0.2 bpp=0.4: Fig8b=15.80 Table4=35.62 Table11=35.62 status=CONFLICT
+eps=0.3 bpp=0.4: Fig8b=11.90 Table4=None Table11=32.88 status=CONFLICT
+Summary: 5 PRINT conflicts; 4 cells have no direct comparable printed table condition.
+No replacement value is inferred, and no experimental measurements were produced.

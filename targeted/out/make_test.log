@@ -1,0 +1,33 @@
+mkdir -p results
+bin/gan_ppo_ambtc_infer example/lena_like_64.pgm results/demo_0p2.pgm 0.2 weight/policy_smoke.txt
+DEMO_ONLY target_bpp=0.2000 requested_bits=819 embedded_bits=819 actual_bpp=0.199951 bitmap_roundtrip_errors=0 PSNR=31.6995 global_SSIM=0.991100
+stego_preview=results/demo_0p2.pgm sidecar=results/demo_0p2.pgm.ambtc action_map=results/demo_0p2.pgm.map payload=results/demo_0p2.pgm.payload.bin
+bin/gan_ppo_ambtc_extract results/demo_0p2.pgm.ambtc results/demo_0p2.pgm.map results/demo_0p2_recovered.bin
+DEMO_ONLY recovered_bits=819 output=results/demo_0p2_recovered.bin (last byte may contain padding)
+cmp results/demo_0p2.pgm.payload.bin results/demo_0p2_recovered.bin
+bin/gan_ppo_ambtc_infer example/lena_like_64.pgm results/demo_0p4.pgm 0.4 weight/policy_smoke.txt
+DEMO_ONLY target_bpp=0.4000 requested_bits=1638 embedded_bits=1638 actual_bpp=0.399902 bitmap_roundtrip_errors=0 PSNR=29.9147 global_SSIM=0.986593
+stego_preview=results/demo_0p4.pgm sidecar=results/demo_0p4.pgm.ambtc action_map=results/demo_0p4.pgm.map payload=results/demo_0p4.pgm.payload.bin
+bin/gan_ppo_ambtc_extract results/demo_0p4.pgm.ambtc results/demo_0p4.pgm.map results/demo_0p4_recovered.bin
+DEMO_ONLY recovered_bits=1638 output=results/demo_0p4_recovered.bin (last byte may contain padding)
+cmp results/demo_0p4.pgm.payload.bin results/demo_0p4_recovered.bin
+printf 'example/lena_like_64.pgm\n' > results/demo_images.txt
+bin/gan_ppo_ambtc_eval results/demo_images.txt results/demo_eval.csv 0.4 weight/policy_smoke.txt
+DEMO_ONLY evaluated=1 failed=0 csv=results/demo_eval.csv
+test "$(sha256sum results/demo_0p2.pgm results/demo_0p4.pgm | cut -d' ' -f1 | uniq | wc -l)" -eq 2
+cc -O2 -std=c11 -Wall -Wextra -Wpedantic -Iinclude -o bin/test_math src/generator.c tests/test_math.c -lm
+bin/test_math
+Math/position checks passed: center-zero and unique bit positions
+python3 -m unittest discover -s tests -v
+test_aggregate_measured_confusion_math_with_explicit_test_fixture (test_demo.DemoTests.test_aggregate_measured_confusion_math_with_explicit_test_fixture) ... ok
+test_aggregate_refuses_empty_and_missing (test_demo.DemoTests.test_aggregate_refuses_empty_and_missing) ... ok
+test_distinct_requested_payloads_and_roundtrip (test_demo.DemoTests.test_distinct_requested_payloads_and_roundtrip) ... ok
+test_evaluation_uses_measured_data_and_provenance (test_demo.DemoTests.test_evaluation_uses_measured_data_and_provenance) ... ok
+test_figure8_audit (test_demo.DemoTests.test_figure8_audit) ... ok
+test_crosscheck_provenance (test_targeted.Targeted.test_crosscheck_provenance) ... ok
+test_direct_pdf_transcription (test_targeted.Targeted.test_direct_pdf_transcription) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 2.562s
+
+OK

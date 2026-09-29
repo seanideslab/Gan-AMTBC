@@ -1,0 +1,13 @@
+{
+  "status": "NEW_INDEPENDENT_RECONSTRUCTION_EVALUATION",
+  "smoke_only": true,
+  "n_images": 1,
+  "checkpoint": "/mnt/data/_ambtc_v6_work/SMOKE_FULL_ARCH_FINAL/checkpoint_latest.pth",
+  "manifest_sha256": "1dc52f077698c6f64c478b4a51bc7ee52201a1092d311590f5458c8c15c41e09",
+  "target_bpp": 0.4,
+  "mean_achieved_bpp": 0.400390625,
+  "total_bit_errors": 0,
+  "mean_corrected_psnr_vs_ambtc": 24.927521886115052,
+  "no_detection_metric": "No trained steganalysis detector available; P_E not estimated",
+  "not_comparable_to_paper": true
+}

@@ -1,0 +1,13 @@
+test_centered_candidate_at_origin (test_architecture.RecoveryUnitTests.test_centered_candidate_at_origin) ... ok
+test_dqn_output (test_architecture.RecoveryUnitTests.test_dqn_output) ... ok
+test_no_original_weights_in_package (test_architecture.RecoveryUnitTests.test_no_original_weights_in_package) ... ok
+test_ppo_both_variants (test_architecture.RecoveryUnitTests.test_ppo_both_variants) ... ok
+test_srm_needs_verified_real_kernels (test_architecture.RecoveryUnitTests.test_srm_needs_verified_real_kernels) ... ok
+test_unet_shape_grad (test_architecture.RecoveryUnitTests.test_unet_shape_grad) ... ok
+test_duplicates_cannot_cross_partition (test_dataset_inventory.DataTests.test_duplicates_cannot_cross_partition) ... ok
+test_empty_dataset_refused (test_dataset_inventory.DataTests.test_empty_dataset_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 1.289s
+
+OK

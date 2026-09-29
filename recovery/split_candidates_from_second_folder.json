@@ -1,0 +1,17 @@
+{
+  "status": "POSSIBLE_HISTORICAL_PROTOCOLS_NOT_IDENTIFIED_AS_PUBLISHED_SPLIT",
+  "source_name": "掃描檔案含pth的.pdf",
+  "source_sha256": "2472a344f79019e84e9d93e511d7623c8debd58dbf4d53f3d9b3afc4ec94ae7c",
+  "dataset": "BOSSbase 1.01",
+  "dataset_count": 10000,
+  "note_preprocessing_size": [256, 256],
+  "published_main_resolution": [512, 512],
+  "split_function": "sklearn.model_selection.train_test_split",
+  "candidate_random_states": [42, 0, 123, 2025],
+  "candidate_schemes": [
+    {"id": "half", "train_size": 0.5, "test_size": 0.5, "expected_counts": {"train": 5000, "val": 0, "test": 5000}},
+    {"id": "monitoring", "train_size": 0.4, "test_size": 0.5, "expected_counts": {"train": 4000, "val": 1000, "test": 5000}},
+    {"id": "capacity", "train_size": 0.8, "test_size": 0.2, "expected_counts": {"train": 8000, "val": 0, "test": 2000}}
+  ],
+  "important": "These 12 combinations are NEW CANDIDATES only. Input list ordering and 256x256/512x512 preprocessing must be established to identify any historical split."
+}

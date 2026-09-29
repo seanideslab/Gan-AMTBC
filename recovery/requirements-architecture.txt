@@ -1,0 +1,4 @@
+# Optional architecture-check environment, not the original experiment environment.
+torch>=2.0
+numpy>=1.24
+Pillow>=9.0

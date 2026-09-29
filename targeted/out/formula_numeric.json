@@ -1,0 +1,15 @@
+{
+  "published_subtraction_at_zero": -1.9865235024140255,
+  "uncompensated_sum_half_at_zero": -0.006647453055582397,
+  "independent_centered_candidate_at_zero": 0.0,
+  "published_limits_at_large_values": [
+    0.0,
+    0.0
+  ],
+  "candidate_limits_at_large_values": [
+    -1.0,
+    1.0
+  ],
+  "original_PyTorch_training_formula": "NOT_AVAILABLE",
+  "C_demo_calls_double_tanh": false
+}

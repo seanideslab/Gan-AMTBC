@@ -1,0 +1,2 @@
+image_sha256,requested_bpp,achieved_bpp,embedded_bits,bit_errors,cover_ambtc_psnr_vs_raw,baseline_psnr_vs_ambtc,corrected_psnr_vs_ambtc,baseline_psnr_vs_raw,corrected_psnr_vs_raw,status
+ebc1f8a32a63b347edd0822ec7d6a01662be46493569f901bfdf238ce6c5debc,0.4,0.400390625,410,0,29.344244121583202,25.07417993736279,24.927521886115052,23.7197779212852,23.617822804527663,NEW_INDEPENDENT_RECONSTRUCTION

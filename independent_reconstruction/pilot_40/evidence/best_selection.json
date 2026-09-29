@@ -1,0 +1,11 @@
+{
+  "experiment_label": "NEW_INDEPENDENT_RECONSTRUCTION / SMOKE_ONLY / FIXED_VALIDATION",
+  "best_epoch": 3,
+  "fixed_score": 0.00466476168949157,
+  "checkpoint_sha256": "dcbb6440dd1db5f70240c48013e6d3feed7faaf693a4e122276eb9231a944639",
+  "manifest_sha256": "cdd64fe0cfe13c2bdaba0551e9a23dadd3a9c647912f74e33e4827f470f312b6",
+  "fixed_validation_config_sha256": "d2dcae5d640d5024df43c8bb13597789818e8c799e677e34aecf259a7750a8a3",
+  "criterion": "Minimum mean fixed validation corrected_mse over 0.2 and 0.4; strict <, earliest tie",
+  "holdout_used_for_selection": false,
+  "selected_utc": "2026-09-29T10:11:54.590554+00:00"
+}

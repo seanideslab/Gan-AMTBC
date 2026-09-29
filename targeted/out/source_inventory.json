@@ -1,0 +1,110 @@
+[
+  {
+    "kind": "PUBLISHED_ARTICLE_RESEARCH_ASSETS",
+    "path": "original_assets/ppo_actor.pt",
+    "exists": false,
+    "sha256": null
+  },
+  {
+    "kind": "PUBLISHED_ARTICLE_RESEARCH_ASSETS",
+    "path": "original_assets/dqn.pt",
+    "exists": false,
+    "sha256": null
+  },
+  {
+    "kind": "PUBLISHED_ARTICLE_RESEARCH_ASSETS",
+    "path": "original_assets/unet.pt",
+    "exists": false,
+    "sha256": null
+  },
+  {
+    "kind": "PUBLISHED_ARTICLE_RESEARCH_ASSETS",
+    "path": "original_assets/srm_srnet.pt",
+    "exists": false,
+    "sha256": null
+  },
+  {
+    "kind": "PUBLISHED_ARTICLE_RESEARCH_ASSETS",
+    "path": "original_assets/srm_extractor.py",
+    "exists": false,
+    "sha256": null
+  },
+  {
+    "kind": "PUBLISHED_ARTICLE_RESEARCH_ASSETS",
+    "path": "original_assets/maxsrmd2_extractor.py",
+    "exists": false,
+    "sha256": null
+  },
+  {
+    "kind": "PUBLISHED_ARTICLE_RESEARCH_ASSETS",
+    "path": "original_assets/ERANet.pt",
+    "exists": false,
+    "sha256": null
+  },
+  {
+    "kind": "PUBLISHED_ARTICLE_RESEARCH_ASSETS",
+    "path": "original_assets/SiaStegNet.pt",
+    "exists": false,
+    "sha256": null
+  },
+  {
+    "kind": "PUBLISHED_ARTICLE_RESEARCH_ASSETS",
+    "path": "original_assets/train.py",
+    "exists": false,
+    "sha256": null
+  },
+  {
+    "kind": "PUBLISHED_ARTICLE_RESEARCH_ASSETS",
+    "path": "original_assets/bossbase_test_ids.txt",
+    "exists": false,
+    "sha256": null
+  },
+  {
+    "kind": "PUBLISHED_ARTICLE_RESEARCH_ASSETS",
+    "path": "original_assets/five_seed_raw_runs.csv",
+    "exists": false,
+    "sha256": null
+  },
+  {
+    "kind": "PUBLISHED_ARTICLE_RESEARCH_ASSETS",
+    "path": "original_assets/figure8b_raw.csv",
+    "exists": false,
+    "sha256": null
+  },
+  {
+    "kind": "DEMO_ASSETS",
+    "path": "src/infer.c",
+    "exists": true,
+    "sha256": "116d448942cdc98b7ba8887522ab4245efbedc46be0604ef35515367f30d8b2f"
+  },
+  {
+    "kind": "DEMO_ASSETS",
+    "path": "src/generator.c",
+    "exists": true,
+    "sha256": "69de4fec12f9204a9c8d9247e8f4cebb03cb52b655c3647e3931d26a6e28e301"
+  },
+  {
+    "kind": "DEMO_ASSETS",
+    "path": "src/budget.c",
+    "exists": true,
+    "sha256": "97774f8fae156265da60e1b7f350822fad4b39d8edae6724baaa621a7dfb0fa6"
+  },
+  {
+    "kind": "DEMO_ASSETS",
+    "path": "weight/policy_smoke.txt",
+    "exists": true,
+    "sha256": "1654eb316d9fd819ed27ecd48fbce533968df3865d7073146044fa31bf4c28e2"
+  },
+  {
+    "kind": "DEMO_ASSETS",
+    "path": "verification/DEMO_RESULTS.csv",
+    "exists": true,
+    "sha256": "1f2a12a6b2818087eeea5016f90b2e768c237195760afacb987b988813d396d6"
+  },
+  {
+    "kind": "MEASUREMENT_ADAPTER",
+    "path": "reproduction/score_torchscript.py",
+    "exists": true,
+    "sha256": "11f41b659842eb3a9e193f48b506e0277885a4d9aa5785de82bbd0e709ef0f7f"
+  }
+]

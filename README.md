@@ -1,3 +1,14 @@
+# GAN-PPO-AMBTC — versioned research software and independent pilot records
+
+**PUBLIC RELEASE CANDIDATE — author review and editor coordination required before posting.**
+
+This repository is linked to *Signal Processing: Image Communication* 148 (2026), article 117652, DOI 10.1016/j.image.2026.117652. This release corrects the *demonstration* and adds a separately labelled **new independent reconstruction**. It is not the original end-to-end PPO/DQN/U-Net/SRM-SRNet research pipeline and does **not** reproduce Tables 4, 5, 10 or 11, Figure 8(b), or the published PSNR/P_E values. Published numerical values in `paper_reported/` are historical transcriptions, not measured outputs.
+
+**Start here:** `RELEASE_README.md` (scope, provenance, data rights, commands), `independent_reconstruction/pilot_40/README.md` (new trained checkpoint and validation), and `targeted/` (publication consistency audit). The original GitHub history should be preserved and a distinct tagged release created; this ZIP does not change the remote repository.
+
+
+---
+
 # GAN-PPO-AMBTC: corrected audit and DEMONSTRATION package (not full paper reproduction)
 
 **Status:** This is a transparency-oriented repair of the uploaded C archive. It does **not** contain the published PPO/DQN/U-Net/SRM-SRNet model, its original five-seed training records, full 5000-image test split, or trained advanced steganalyzers. It must not be represented as a reproduction of the numerical results in *Signal Processing: Image Communication* 148 (2026), 117652, DOI 10.1016/j.image.2026.117652.
@@ -29,3 +40,7 @@ Use `reproduction/README.md` for actual detector evaluation and missing-asset in
 The user-provided 64x64 demo PGM and toy weights came with the original archive. No BOSSbase, BOWS-2 or medical images are redistributed. Before making the repository public, confirm redistribution permission for any included images or models. The original 5000-image split cannot be reconstructed from the submitted empty split files.
 
 **Publication-level addendum (v2):** see `audit/README.md` for figure/table consistency check and `verification/` for separate 12-run C demo evidence. These files do not reproduce original PPO/GAN performance.
+
+**Targeted addendum (v3):** `targeted/` contains new read-only inventory, mathematical and publication consistency checks and specific reference corrections. Figure 8(b) final orange published-label transcription corrected from 11.09 to 11.90. No original neural model has been recovered.
+
+**Archived lab parameter note (v4, internal recovery):** see `recovery/README.md`. It adds a provenance-marked configuration record, untrained PyTorch architecture-only scaffold and data inventory tooling; no original model checkpoint or new paper performance measurement is claimed. The old C demo config remains untouched.

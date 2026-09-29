@@ -1,0 +1,51 @@
+{
+  "profile_id": "archived_one_page_parameter_note_2026_09_29",
+  "status": "PARTIALLY_CORROBORATED_ARCHIVED_SUMMARY_NOT_CHECKPOINT",
+  "source_document": "core-training parameter note supplied by author; PDF not included in public archive",
+  "source_sha256": "5c3ddc86452bf54a72836a6da1c1c488bd3af7ec457914214a329258626b1d1d",
+  "source_date_or_version": "UNKNOWN; author does not know whether later versions exist",
+  "blocks": {
+    "ppo": {
+      "state_features": ["QLD", "block_variance"], "state_dim": 2,
+      "actions_bits_per_block": [1,2,4,8],
+      "hidden_widths": [256,256], "reported_parameters_approx": 120000,
+      "shared_or_separate_actor_critic": "UNKNOWN; publication says shared backbone; note does not resolve architecture",
+      "init_hidden": "orthogonal gain sqrt(2)", "actor_head_gain": 0.01,
+      "clip_epsilon": 0.2, "gamma": 0.99, "gae_lambda": 0.95,
+      "budget_penalty_lambda4": 0.1
+    },
+    "dqn": {
+      "observation_features": ["QLD","block_variance","normalized_epoch","running_budget_ratio"],
+      "hidden_widths": [64,64], "activation": "ReLU", "actions": 4,
+      "reward_weight_mapping": "UNRESOLVED: archived note states lambda1/lambda3; paper says lambda1 and co-adjusts lambda2/lambda3",
+      "step_sizes": [0.05,0.05], "initialization": "Kaiming normal",
+      "security_preferring_output_bias": "NOT_NUMERICALLY_SPECIFIED; DO NOT GUESS",
+      "exploration_epsilon_start": 1.0,"exploration_epsilon_end": 0.05,
+      "exploration_decay_epochs": 100,"target_tau": 0.005,
+      "target_update_every_training_steps": 50,"replay_capacity": 10000
+    },
+    "generator": {
+      "architecture": "U-Net with Cross-Feedback Channels, only partial topology provided",
+      "encoder_channels_estimate": [32,64,128,256],"decoder_stages":4,
+      "reported_parameters_approx":4870000,
+      "init":"Kaiming normal", "last_layer_gain_approx":0.01,
+      "input_tensor_semantics":"UNRECOVERED", "output_tensor_semantics":"BM,H,L qualitative only",
+      "double_tanh_alpha":10.0,"double_tanh_beta":5.0,"double_tanh_tau":0.5,
+      "original_double_tanh_implementation":"UNRECOVERED; published subtraction disagrees with C utility"
+    },
+    "discriminator": {
+      "srm_frontend_kernels":30,"srm_kernel_size":[5,5],
+      "srm_weight_shape":[30,1,5,5],"freeze_srm":true,
+      "srm_kernel_coefficients":"NOT_RECOVERED",
+      "srnet_architecture_checkpoint":"NOT_RECOVERED"
+    }
+  },
+  "training": {
+    "optimizer":"Adam","batch_size":16,"epochs":200,
+    "learning_rate_ratio_discriminator_to_generator":4.0,
+    "absolute_learning_rates":"NOT_IN_ARCHIVED_NOTE; old C demo config is illustrative",
+    "training_input_data_and_split":"NOT_RECOVERED",
+    "trained_model_checkpoints":"NOT_RECOVERED",
+    "five_seed_raw_logs":"NOT_RECOVERED"
+  }
+}

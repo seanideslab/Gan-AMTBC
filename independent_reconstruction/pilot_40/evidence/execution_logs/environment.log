@@ -1,0 +1,12 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "cpu": "Intel Core 7 150U",
+  "display_gpu": "Intel Graphics",
+  "torch": "2.8.0+cpu",
+  "cuda": null,
+  "cuda_available": false,
+  "cuda_device_count": 0,
+  "numpy": "2.3.5",
+  "pillow": "12.3.0"
+}

@@ -1,0 +1,9 @@
+Comparison: PUBLISHED TABLE 4 vs PUBLISHED FIGURE 8(b); no reproduced experiment
+epsilon=0.2, bpp=0.1: Table4=46.85% Figure8b=35.62% difference=+11.23 percentage points
+epsilon=0.2, bpp=0.2: Table4=42.54% Figure8b=28.50% difference=+14.04 percentage points
+epsilon=0.2, bpp=0.4: Table4=35.62% Figure8b=15.80% difference=+19.82 percentage points
+Table11 has ONLY 0.4 bpp, epsilon=0.1/0.2/0.3:
+epsilon=0.1 bpp=0.4 PE=33.41%
+epsilon=0.2 bpp=0.4 PE=35.62%
+epsilon=0.3 bpp=0.4 PE=32.88%
+The Figure8(b) data cannot be repaired at 0.1/0.2 bpp without original per-epsilon logs.

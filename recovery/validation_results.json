@@ -1,0 +1,12 @@
+{
+ "status":"ARCHITECTURE_AND_DEMO_ONLY_NOT_PAPER_REPRODUCTION",
+ "source_note_sha256":"5c3ddc86452bf54a72836a6da1c1c488bd3af7ec457914214a329258626b1d1d",
+ "recovery_architecture_tests":8,
+ "recovery_architecture_passed":8,
+ "legacy_c_demo_tests":7,
+ "legacy_c_demo_passed":7,
+ "original_checkpoints_found":0,
+ "original_test_split_found":false,
+ "original_five_seed_logs_found":false,
+ "scope":"No model performance results or dataset claims are newly generated"
+}

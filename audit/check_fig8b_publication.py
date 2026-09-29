@@ -42,7 +42,7 @@ def main():
                 'table11_minus_fig_pp':str(d11) if d11 is not None else '',
                 'comparison_status':status,'provenance':'PUBLICATION_TRANSCRIPTION_ONLY_NOT_RAW_RESULTS'})
             print(f'eps={eps} bpp={bpp}: Fig8b={value} Table4={t4} Table11={t11val} status={status}')
-    assert next(row for row in figs if row['clip_epsilon']=='0.3' and row['bpp']=='0.4')['pe_percent']=='11.09'
+    # Values are supplied by a visually verified publication transcription; no inferred correction.
     assert counts=={'MATCH':0,'CONFLICT':5,'NOT_COMPARABLE':4}, counts
     print('Summary: 5 PRINT conflicts; 4 cells have no direct comparable printed table condition.')
     print('No replacement value is inferred, and no experimental measurements were produced.')

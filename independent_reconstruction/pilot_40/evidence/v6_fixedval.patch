@@ -1,0 +1,143 @@
+--- v6/new_training/train_generator.py
++++ fixedval/new_training/train_generator.py
+@@ -2,7 +2,7 @@
+ Does NOT reproduce paper's PPO-DQN-GAN/SRNet results or replace published figures.
+ """
+ from __future__ import annotations
+-import argparse,hashlib,json,random,time
++import argparse,hashlib,json,random,time,shutil,datetime
+ from pathlib import Path
+ import numpy as np
+ import torch
+@@ -68,6 +68,24 @@
+     return out
+ 
+ 
++def fixed_validation_config(loader,device,targets,limit_batches=None):
++    """Fingerprint actual per-image loads/messages, independent of model weights."""
++    records=[]
++    with torch.no_grad():
++        for target in targets:
++            for batch,(x,ids) in enumerate(loader):
++                if limit_batches is not None and batch>=limit_batches:break
++                sbm,_,_,loads,secrets=make_pair(x.to(device),ids,target,batch)
++                for j,sample_id in enumerate(ids):
++                    records.append({'image_sha256':sample_id,'target_bpp':target,'batch':batch,
++                                    'pair_seed':batch,'embedding_key':'new-reconstruction-v1',
++                                    'loads':loads[j],
++                                    'secret_sha256':hashlib.sha256(secrets[j].numpy().tobytes()).hexdigest(),
++                                    'stego_bitmap_sha256':hashlib.sha256(sbm[j].cpu().numpy().tobytes()).hexdigest()})
++    digest=hashlib.sha256(json.dumps(records,sort_keys=True,separators=(',',':')).encode()).hexdigest()
++    return {'sha256':digest,'epoch_argument':0,'targets':list(targets),'items':records}
++
++
+ def main():
+     ap=argparse.ArgumentParser()
+     ap.add_argument('--data-root',required=True)
+@@ -102,6 +120,7 @@
+     model=CandidateAttentionResUNet(a.base).to(device)
+     optimizer=torch.optim.Adam(model.parameters(),lr=a.lr)
+     vloader=DataLoader(va,batch_size=a.batch_size,shuffle=False,num_workers=0) if va else None
++    if vloader is None:raise ValueError('Fixed validation requires a nonempty validation split')
+     meta={'status':'NEW_INDEPENDENT_RECONSTRUCTION','smoke_only':a.smoke,
+           'not_original_checkpoint':True,'no_security_detector':True,'model':'CandidateAttentionResUNet',
+           'model_base':a.base,'parameters':count_parameters(model),'source_note':'unverified 50-base Attention ResUNet shape summary',
+@@ -109,7 +128,9 @@
+           'epochs_requested':a.epochs,'batch_size':a.batch_size,'gradient_accumulation':a.accumulate,
+           'effective_batch_size':a.batch_size*a.accumulate,'seed':a.seed,'lr':a.lr,
+           'targets':a.targets,'max_delta':a.max_delta,'device':str(device),
+-          'training_objective':'AMBTC-only cover vs bitmap-preserving stego recon MSE; no steganalysis loss'}
++          'training_objective':'AMBTC-only cover vs bitmap-preserving stego recon MSE; no steganalysis loss',
++          'validation_protocol':'FIXED_VALIDATION','fixed_val_epoch':0,'fixed_val_targets':[.2,.4],
++          'experiment_label':'NEW_INDEPENDENT_RECONSTRUCTION / SMOKE_ONLY / FIXED_VALIDATION'}
+     start_epoch=0
+     if a.resume:
+         previous=torch.load(a.resume,map_location='cpu',weights_only=True)
+@@ -124,6 +145,15 @@
+         if 'torch_rng_state' in previous:torch.set_rng_state(previous['torch_rng_state'])
+     (out/'training_metadata.json').write_text(json.dumps(meta,indent=2),encoding='utf8')
+     log_mode='a' if a.resume else 'w'
++    best_score=float('inf');best_epoch=None
++    if a.resume:
++        best_score=float(previous.get('best_score',float('inf')))
++        best_epoch=previous.get('best_epoch')
++    # Extra validation loader iterations must not change training RNG progression.
++    rng_state=torch.get_rng_state()
++    fixed_config=fixed_validation_config(vloader,device,(.2,.4),a.max_batches)
++    torch.set_rng_state(rng_state)
++    (out/'fixed_validation_config.json').write_text(json.dumps(fixed_config,indent=2),encoding='utf8')
+     with (out/'training_log.jsonl').open(log_mode) as log:
+         for ep in range(start_epoch,a.epochs):
+             # Each epoch has its own deterministic shuffled order, allowing exact resume.
+@@ -132,14 +162,41 @@
+             t=time.time()
+             res=run_epoch(model,loader,optimizer,ep,device,a.targets,a.max_delta,a.max_batches,a.accumulate)
+             val=run_epoch(model,vloader,None,ep,device,a.targets,a.max_delta,a.max_batches) if vloader else None
+-            record={'epoch':ep+1,'train':res,'validation':val,'seconds':round(time.time()-t,3),'status':meta['status']}
++            rng_state=torch.get_rng_state()
++            fixed_val={str(target):run_epoch(model,vloader,None,0,device,[target],a.max_delta,a.max_batches)
++                       for target in (.2,.4)}
++            current_config=fixed_validation_config(vloader,device,(.2,.4),a.max_batches)
++            torch.set_rng_state(rng_state)
++            if current_config['sha256']!=fixed_config['sha256']:
++                raise RuntimeError('Fixed validation message/load configuration changed')
++            fixed_score=sum(v['corrected_mse'] for v in fixed_val.values())/2
++            is_best=fixed_score<best_score
++            if is_best:best_score=fixed_score;best_epoch=ep+1
++            record={'epoch':ep+1,'train':res,'validation':val,'fixed_val':fixed_val,
++                    'fixed_score':fixed_score,'best_epoch':best_epoch,'is_best_so_far':is_best,
++                    'fixed_validation_config_sha256':current_config['sha256'],
++                    'seconds':round(time.time()-t,3),'status':meta['status'],
++                    'experiment_label':meta['experiment_label']}
+             log.write(json.dumps(record)+'\n');log.flush()
+             print(json.dumps(record),flush=True)
+             # Latest checkpoint and metadata every epoch; safe weights-only loading.
+             ckpt={'state_dict':{k:v.detach().cpu() for k,v in model.state_dict().items()},
+                   'meta':meta,'epoch_completed':ep+1,'optimizer_state_dict':optimizer.state_dict(),
+-                  'torch_rng_state':torch.get_rng_state()}
++                  'torch_rng_state':torch.get_rng_state(),'fixed_val':fixed_val,'fixed_score':fixed_score,
++                  'best_score':best_score,'best_epoch':best_epoch,
++                  'fixed_validation_config_sha256':current_config['sha256']}
+             temp=out/'checkpoint_latest.tmp';torch.save(ckpt,temp);temp.replace(out/'checkpoint_latest.pth')
++            epoch_path=out/f'checkpoint_epoch_{ep+1:03d}.pth'
++            shutil.copyfile(out/'checkpoint_latest.pth',epoch_path)
++            if is_best:
++                shutil.copyfile(epoch_path,out/'checkpoint_best.pth')
++                selection={'experiment_label':meta['experiment_label'],'best_epoch':best_epoch,
++                           'fixed_score':fixed_score,'checkpoint_sha256':sha(out/'checkpoint_best.pth'),
++                           'manifest_sha256':manifest_hash,'fixed_validation_config_sha256':current_config['sha256'],
++                           'criterion':'Minimum mean fixed validation corrected_mse over 0.2 and 0.4; strict <, earliest tie',
++                           'holdout_used_for_selection':False,
++                           'selected_utc':datetime.datetime.now(datetime.timezone.utc).isoformat()}
++                (out/'best_selection.json').write_text(json.dumps(selection,indent=2),encoding='utf8')
+     (out/'TRAINING_COMPLETE.txt').write_text('NEW reconstruction only; NOT the original manuscript model.\n')
+ 
+ if __name__=='__main__':main()
+--- v6/new_training/evaluate_new.py
++++ fixedval/new_training/evaluate_new.py
+@@ -51,7 +51,11 @@
+                          'baseline_psnr_vs_ambtc':psnr(cover_ambtc,baseline),
+                          'corrected_psnr_vs_ambtc':psnr(cover_ambtc,out),
+                          'baseline_psnr_vs_raw':psnr(x,baseline),
+-                         'corrected_psnr_vs_raw':psnr(x,out),'status':meta['status']})
++                         'corrected_psnr_vs_raw':psnr(x,out),
++                         'baseline_mse_vs_ambtc':(baseline-cover_ambtc).square().mean().item(),
++                         'corrected_mse_vs_ambtc':(out-cover_ambtc).square().mean().item(),
++                         'experiment_label':meta.get('experiment_label',meta['status']),
++                         'status':meta['status']})
+     if not rows:raise ValueError('No test images')
+     outpath=Path(a.out);outpath.parent.mkdir(parents=True,exist_ok=True)
+     with outpath.open('w',newline='') as f:
+@@ -62,6 +66,12 @@
+              'mean_achieved_bpp':sum(r['achieved_bpp'] for r in rows)/len(rows),
+              'total_bit_errors':sum(r['bit_errors'] for r in rows),
+              'mean_corrected_psnr_vs_ambtc':sum(r['corrected_psnr_vs_ambtc'] for r in rows)/len(rows),
++             'mean_baseline_psnr_vs_ambtc':sum(r['baseline_psnr_vs_ambtc'] for r in rows)/len(rows),
++             'mean_baseline_mse_vs_ambtc':sum(r['baseline_mse_vs_ambtc'] for r in rows)/len(rows),
++             'mean_corrected_mse_vs_ambtc':sum(r['corrected_mse_vs_ambtc'] for r in rows)/len(rows),
++             'improved_images':sum(r['corrected_mse_vs_ambtc']<r['baseline_mse_vs_ambtc'] for r in rows),
++             'checkpoint_sha256':sha(a.checkpoint),'epoch_completed':torch.load(a.checkpoint,map_location='cpu',weights_only=True)['epoch_completed'],
++             'experiment_label':meta.get('experiment_label',meta['status']),
+              'no_detection_metric':'No trained steganalysis detector available; P_E not estimated',
+              'not_comparable_to_paper':True}
+     outpath.with_suffix('.summary.json').write_text(json.dumps(summary,indent=2),encoding='utf8')

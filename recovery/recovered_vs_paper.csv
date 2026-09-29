@@ -1,0 +1,20 @@
+item,archive_note,published_paper,old_v3_demo,status,next_action
+PPO hidden widths,"2x256","2-layer backbone, dimensions not specified","toy C policy",PARTIAL_TOPOLOGY,Keep proposed PyTorch scaffold separate
+PPO model parameter count,approx 0.12M,0.12M,not applicable,CONSISTENT_APPROX_ONLY,Exact count depends on shared vs separate heads
+PPO actor head gain,0.01,not specified,not applicable,NOTE_ONLY,Architecture smoke test only
+DQN hidden widths,"2x64","2x64",not applicable,CORROBORATED,Architecture smoke test only
+DQN reward-weight target,"lambda1/lambda3","lambda1 and co-adjust lambda2/lambda3",not applicable,CONFLICT_UNRESOLVED,Do not encode weight-selection semantics
+U-Net encoder widths,"estimated 32/64/128/256","4 encoder/4 decoder; max 256",not applicable,ESTIMATE,Record exact architecture unknown
+U-Net parameter count,approx 4.87M,4.87M,none,REPORTED_NOT_RECONSTRUCTED,Do not tune guessed topology to fit target
+SRM weight shape,"30x1x5x5",30-kernel SRM frontend,missing,CORROBORATED_SHAPE_ONLY,Require genuine coefficients
+SRNet model checkpoint,not supplied,described architecture,missing,MISSING,Require independently validated model
+PPO clip,0.2,0.2,0.2,CORROBORATED,Safe to use in new profile
+GAE lambda,0.95,0.95,0.95,CORROBORATED,Safe to use in new profile
+PPO gamma,0.99,0.99,0.99,CORROBORATED,Safe to use in new profile
+Budget lambda4,0.1,0.1,0.1,CORROBORATED,Safe to use in new profile
+DQN target tau,0.005,0.005,0.005,CORROBORATED,Safe to use in new profile
+DQN buffer,10000,10000,10000,CORROBORATED,Safe to use in new profile
+Training batch size,16,"16, Table 7b",8,DEMO_CONFIG_CONFLICT,Use 16 in new PyTorch profile; preserve old demo settings
+Training epochs,200,200,200,CORROBORATED,Safe to use in new profile
+TTUR ratio,4,4,4,CORROBORATED_RATIO_ONLY,Absolute learning rates and step schedule unverified
+Double Tanh alpha beta tau,"10,5,0.5","10,5,0.5",C utility uses different defaults,CORROBORATED_PARAMETERS_ONLY,Actual PyTorch equation unknown

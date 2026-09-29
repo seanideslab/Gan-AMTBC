@@ -1,0 +1,8 @@
+{
+  "best_epoch": 3,
+  "checkpoint_sha256": "dcbb6440dd1db5f70240c48013e6d3feed7faaf693a4e122276eb9231a944639",
+  "criterion": "argmin fixed_score, validation only",
+  "locked_before_any_current_run_holdout": true,
+  "locked_utc": "2026-09-29T10:11:55.091873+00:00",
+  "best_selection_sha256": "037a63df6f5ba1d00075e0a243c5442204a5bd3959647ff5fa31cd0373a974dd"
+}
