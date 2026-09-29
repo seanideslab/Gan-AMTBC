@@ -27,3 +27,5 @@ Use `reproduction/README.md` for actual detector evaluation and missing-asset in
 
 ## Provenance and licensing
 The user-provided 64x64 demo PGM and toy weights came with the original archive. No BOSSbase, BOWS-2 or medical images are redistributed. Before making the repository public, confirm redistribution permission for any included images or models. The original 5000-image split cannot be reconstructed from the submitted empty split files.
+
+**Publication-level addendum (v2):** see `audit/README.md` for figure/table consistency check and `verification/` for separate 12-run C demo evidence. These files do not reproduce original PPO/GAN performance.
