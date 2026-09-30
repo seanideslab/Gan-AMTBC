@@ -1,46 +1,67 @@
-# GAN-PPO-AMBTC — versioned research software and independent pilot records
+# GAN-PPO-AMBTC — Public Transparency Release v1.2.0
 
-**PUBLIC RELEASE CANDIDATE — author review and editor coordination required before posting.**
+## Related publication
 
-This repository is linked to *Signal Processing: Image Communication* 148 (2026), article 117652, DOI 10.1016/j.image.2026.117652. This release corrects the *demonstration* and adds a separately labelled **new independent reconstruction**. It is not the original end-to-end PPO/DQN/U-Net/SRM-SRNet research pipeline and does **not** reproduce Tables 4, 5, 10 or 11, Figure 8(b), or the published PSNR/P_E values. Published numerical values in `paper_reported/` are historical transcriptions, not measured outputs.
+Shang-En Tsai, "Security-aware payload control and residual suppression for data hiding in AMBTC-compressed images," Signal Processing: Image Communication 148 (2026) 117652.
 
-**Start here:** `RELEASE_README.md` (scope, provenance, data rights, commands), `independent_reconstruction/pilot_40/README.md` (new trained checkpoint and validation), and `targeted/` (publication consistency audit). The original GitHub history should be preserved and a distinct tagged release created; this ZIP does not change the remote repository.
+DOI: https://doi.org/10.1016/j.image.2026.117652
 
+This release provides corrected demonstration software, source-provenance records, an independently reconstructed small-scale pilot, and supporting materials for the article's corrigendum. Earlier repository history is preserved.
 
----
+## Release contents
 
-# GAN-PPO-AMBTC: corrected audit and DEMONSTRATION package (not full paper reproduction)
+### Corrected C demonstration
 
-**Status:** This is a transparency-oriented repair of the uploaded C archive. It does **not** contain the published PPO/DQN/U-Net/SRM-SRNet model, its original five-seed training records, full 5000-image test split, or trained advanced steganalyzers. It must not be represented as a reproduction of the numerical results in *Signal Processing: Image Communication* 148 (2026), 117652, DOI 10.1016/j.image.2026.117652.
+`src/`, `include/`, `tests/`, and verification/ contain the corrected demonstration, payload-budget handling, bitmap-level extraction checks, and functional verification.
 
-## Important changes
-- Removed `src/export_ablation.c` which wrote paper table values as string literals; the historical values are now **read-only transcriptions** in `paper_reported/` with explicit provenance, not generated empirical results.
-- Removed `src/train_stub.c` which fabricated a smooth training curve. No pretend training log is emitted.
-- Replaced unconstrained per-block toy allocation with a deterministic **demo-only** global budget projection over action set {1,2,4,8}. It reports both target and achieved capacity, with representability to the nearest integer payload bit.
-- Uses unique deterministic bitmap positions and a separate serialized AMBTC triplet + action-map sidecar for actual **bitmap-level recovery**, rather than always claiming zero errors without checking anything.
-- Exposes `double_tanh_centered()` for an asymmetric center-zero variant and `double_tanh()` as a symmetric or centered utility. Neither is evidence of what was actually used in the published experiments.
-- Fixed `example/` vs `examples/`, `weight/` vs `weights/`, and the broken originally hard-coded local split path. The new smoke workflow is tested.
-- Adds a real detector inference *adapter* requiring externally supplied trusted TorchScript weights, and a raw-run aggregation script that refuses missing experiments.
+The previous hard-coded results exporter and synthetic training logger have been removed from the active workflow. Demonstration results are not measurements from the published experiments.
 
-## Build, test, and demonstration
-```
-make
-make test
-bin/gan_ppo_ambtc_infer example/lena_like_64.pgm results/example0p4.pgm 0.4 weight/policy_smoke.txt
-bin/gan_ppo_ambtc_extract results/example0p4.pgm.ambtc results/example0p4.pgm.map results/recovered.bin
-cmp results/example0p4.pgm.payload.bin results/recovered.bin
-```
-The `.pgm` is a **visualization of decompressed pixels**; the `.ambtc` sidecar is the actual demonstration compressed representation and `.map` is required to know per-block bit counts. Recovering the bitstream solely from a re-encoded `.pgm` is NOT claimed.
+### Independent PyTorch pilot
 
-`policy_smoke.txt` is an untrained toy weight file. The C generator is a small deterministic bitmap/quantization demonstration, not a U-Net. `PSNR` and `global_SSIM` printed by C are measured on the example input and are **not directly comparable** with published data. The resulting `DEMO_NOT_PAPER` CSV is deliberately separated from publication transcriptions.
+new_training/ and independent_reconstruction/pilot_40/ contain a newly developed candidate model, trained checkpoint, data manifest, fixed-validation records, and holdout results.
 
-Use `reproduction/README.md` for actual detector evaluation and missing-asset inventory; use `CORRECTION_AUDIT.md` and `EDITOR_CORRECTION_REQUEST.md` before updating a journal-linked public repository.
+The pilot used 40 newly selected BOSSbase 1.01 images (20 training, 10 validation, 10 holdout), resized to 64 × 64, with three training epochs and a base-50 candidate Attention ResUNet.
 
-## Provenance and licensing
-The user-provided 64x64 demo PGM and toy weights came with the original archive. No BOSSbase, BOWS-2 or medical images are redistributed. Before making the repository public, confirm redistribution permission for any included images or models. The original 5000-image split cannot be reconstructed from the submitted empty split files.
+Best checkpoint:
+independent_reconstruction/pilot_40/checkpoint_best.pth
 
-**Publication-level addendum (v2):** see `audit/README.md` for figure/table consistency check and `verification/` for separate 12-run C demo evidence. These files do not reproduce original PPO/GAN performance.
+SHA-256:
+dcbb6440dd1db5f70240c48013e6d3feed7faaf693a4e122276eb9231a944639
 
-**Targeted addendum (v3):** `targeted/` contains new read-only inventory, mathematical and publication consistency checks and specific reference corrections. Figure 8(b) final orange published-label transcription corrected from 11.09 to 11.90. No original neural model has been recovered.
+The independent pilot is not the recovered original PPO/DQN/GAN experiment. It did not reproduce the published steganalysis detection-error results.
 
-**Archived lab parameter note (v4, internal recovery):** see `recovery/README.md`. It adds a provenance-marked configuration record, untrained PyTorch architecture-only scaffold and data inventory tooling; no original model checkpoint or new paper performance measurement is claimed. The old C demo config remains untouched.
+### Published data and correction materials
+
+`paper_reported/`, `audit/`, and targeted/ preserve publication transcriptions, provenance, and consistency audits.
+
+corrections/ contains the standalone revised Figure 8(b) and its numerical source, with additional published Table 4 values retained for reference in the CSV.
+
+## Figure 8(b)
+
+The revised panel is a visualization of the clipping-sensitivity values already published in Table 11 at 0.4 bpp. The source CSV also retains Table 4 payload-sensitivity values for reference; those values are not plotted in this standalone panel.
+
+Files:
+- corrections/Figure_8b_revised.tiff
+- corrections/Figure_8b_source.csv
+
+Table 4 reports detection-error rates of 46.85%, 42.54%, and 35.62% at 0.1, 0.2, and 0.4 bpp, respectively, for epsilon = 0.2.
+
+Table 11 reports 33.41%, 35.62%, and 32.88% at 0.4 bpp for epsilon = 0.1, 0.2, and 0.3, respectively.
+
+The revised panel introduces no new experimental measurements. It does not imply recovery of the original plotting data. Figure 8(a) is unchanged. The formal corrigendum is handled separately by the publisher.
+
+## Evidence limitations
+
+The original complete PPO/DQN/U-Net training pipeline, original study checkpoints, 5,000-image split, run-level records, and trained steganalysis components are not available in this archive.
+
+The published table values are historical transcriptions, not measurements regenerated by the supplied C code or independent pilot.
+
+The new checkpoint and its results must not be represented as the original published model or as independent verification of the article's reported security performance.
+
+## Reproduction and provenance
+
+See `RELEASE_README.md`, `new_training/README.md`, and `independent_reconstruction/pilot_40/evidence/METHODS_AND_REPRODUCIBILITY.md`.
+
+Third-party BOSSbase, BOWS-2, and medical images are not redistributed. The pilot provides image identifiers, SHA-256 hashes, split assignments, code, checkpoint, and experiment records.
+
+Contact: Shang-En Tsai — sean@mail.cjcu.edu.tw
